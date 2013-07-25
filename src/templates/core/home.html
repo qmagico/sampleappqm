@@ -1,0 +1,12 @@
+<body>
+	<ul>
+	{% for mensagem in mensagens %}
+		<li> {{ mensagem.conteudo }} </li>
+	{% endfor %}
+	</ul>
+	<form method="POST" action="/add">
+		<label for="conteudo">Deixe uma mensagem para a posteridade:</label>
+		<input type="text" id="conteudo" name="conteudo">
+		<input type="submit">
+	</form>
+</body>
