@@ -15,7 +15,10 @@ from django.db import models
 # from bitcoin_frespo.models import *
 # from frespo_currencies import currency_service
 # from django.conf import settings
+from django.db.models import fields
+
 
 class Mensagem(models.Model): 
     conteudo = models.TextField(null=False, blank=False)
+    user_id = fields.CharField(null=False)
 
