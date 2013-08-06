@@ -1,20 +1,30 @@
-import json
-import urllib
+from core import qmagico_api
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from core.models import *
 
 
+def getQMApi():
+    host = Config.get('qmagico_host', 'http://localhost:8080')
+    api_key = Config.get('qmagico_api_key', 'abc123')
+    return qmagico_api.QMApi(host, api_key)
+
+
+def authenticate(request):
+    token = request.GET['token']
+    ns = request.GET['ns']
+    qmapi = getQMApi()
+    user_data = qmapi.auth(token, ns)
+    if 'error' in user_data:
+        raise BaseException()
+    request.session.update({'user_data': user_data})
+
+
 def home(request):
     if 'token' in request.GET:
-        token = request.GET['token']
-        ns = request.GET['ns']
-        url = "http://localhost:8081/api/auth/%s/%s" % (token, ns)
-        user_data = urllib.urlopen(url).read()
-        user_data = json.loads(user_data)
-        request.session.update({'user_data': user_data})
-    else:
-        user_data = request.session.get('user_data')
+        authenticate(request)
+        
+    user_data = request.session.get('user_data')
 
     mensagens = Mensagem.objects.filter(user_id=user_data['user_id'])
 
@@ -22,7 +32,7 @@ def home(request):
 
     response = render_to_response('core/home.html',
                                   values,
-                                  context_instance = RequestContext(request))
+                                  context_instance=RequestContext(request))
 
     return response
 
