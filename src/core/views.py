@@ -26,7 +26,9 @@ def home(request):
         
     user_data = request.session.get('user_data')
 
-    mensagens = Mensagem.objects.filter(user_id=user_data['user_id'])
+    mensagens = Mensagem.objects.all()
+    if user_data:
+        mensagens = mensagens.filter(user_id=user_data['user_id'])
 
     values = {'mensagens': mensagens, 'user_data': user_data}
 
@@ -41,6 +43,7 @@ def nova_mensagem(request):
     user_data = request.session.get('user_data')
     msg = Mensagem()
     msg.conteudo = request.POST['conteudo']
-    msg.user_id = user_data['user_id']
+    if user_data:
+        msg.user_id = user_data['user_id']
     msg.save()
     return redirect('/')
