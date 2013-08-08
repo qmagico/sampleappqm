@@ -7,7 +7,7 @@ from core.models import *
 def getQMApi():
     host = Config.get('qmagico_host', 'http://localhost:8080')
     api_key = Config.get('qmagico_api_key', 'abc123')
-    return qmagico_api.QMApi(host, api_key)
+    return qmagico_api.QMApi(host, 'sampleapp', api_key)
 
 
 def authenticate(request):
@@ -17,23 +17,25 @@ def authenticate(request):
     user_data = qmapi.auth(token, ns)
     if 'error' in user_data:
         raise BaseException()
-    request.session.update({'user_data': user_data})
+    request.session.update({'user_data': user_data, 'namespace': ns})
 
 
 def home(request):
     if 'token' in request.GET:
         authenticate(request)
-        
     user_data = request.session.get('user_data')
-
+    ns = request.session.get('namespace')
+    qmapi = getQMApi()
+    exercise_lists = qmapi.content__get_by_type(ns, 'EXERCISE_LIST')
     mensagens = Mensagem.objects.filter(user_id=user_data['user_id'])
-
-    values = {'mensagens': mensagens, 'user_data': user_data}
-
+    values = {
+        'mensagens': mensagens,
+        'user_data': user_data,
+        'exercise_lists': exercise_lists
+    }
     response = render_to_response('core/home.html',
                                   values,
                                   context_instance=RequestContext(request))
-
     return response
 
 

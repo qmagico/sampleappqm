@@ -10,4 +10,16 @@
 		<input type="text" id="conteudo" name="conteudo">
 		<input type="submit">
 	</form>
+    <div>
+        <h2>E as listas de exercicios?</h2>
+        {% if exercise_lists.error %}
+            <p>{{ exercise_lists.error }}</p>
+        {% else %}
+            <ul>
+            {% for list in exercise_lists %}
+                <li>{{ list.title }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 </body>
