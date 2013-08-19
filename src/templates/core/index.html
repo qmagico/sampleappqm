@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="row-fluid">
+                    <div class="span2">
+                    </div>
+                    <div class="span8">
+                        <div class="page-header">
+                            <h1>
+                                {{ user_data.name }} <small>central do aluno</small>
+                            </h1>
+                        </div>
+                        <ul class="nav nav-pills">
+                            <li class="active">
+                                <a href="#">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">Boletim</a>
+                            </li>
+                        </ul>
+                        {% if contents %}
+                            <h3>Coisas para estudar:</h3>
+                        <ul class="thumbnails">
+                            {% for c in contents %}
+                            <li class="span4">
+                                <div class="thumbnail">
+                                    <div class="caption">
+                                        <h3>{{ c.title }} <br>
+                                            <label class="label label-warning"><i class="icon-star icon-white"></i> {{ c.points }}</label>
+                                            <label class="label label-important"><i class="icon-heart icon-white"></i> {{ c.likes }}</label>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <h3>Sem exercícios pra estudar :s</h3>
+                        {% endif %}
+                    </div>
+                    <div class="span2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

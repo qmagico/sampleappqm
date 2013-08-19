@@ -27,6 +27,6 @@ class QMApi():
         url = "%s/api/auth/%s/%s" % (self.host, token, ns)
         return self._do_get(url)
 
-    def content__get_by_type(self, ns, type):
-        url = "%s/api/content/get_by_type/%s/%s" % (self.host, ns, type)
+    def content__get_by_type(self, ns, type=''):
+        url = "%s/api/content/get_contents/%s/%s" % (self.host, ns, type)
         return self._do_get(url)
