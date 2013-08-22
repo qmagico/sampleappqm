@@ -1,7 +1,8 @@
-from core import qmagico_api
+import json
+from core.home import qmagico_api
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-from core.models import *
+from core.home.models import *
 
 
 def getQMApi():
@@ -27,14 +28,41 @@ def home(request):
     user_data = request.session.get('user_data')
     ns = request.session.get('namespace')
     qmapi = getQMApi()
+    school_classes = qmapi.user__get_student_classes(ns, user_data['user_id'])
+
     contents = qmapi.content__get_by_type(ns)
-    mensagens = Mensagem.objects.filter(user_id=user_data['user_id'])
+
+    contents_length = {'VIDEO': 0, 'EXERCISE_LIST': 0, 'TEXT_CLASS': 0}
+    metrics_length = {'VIDEO': 0, 'EXERCISE_LIST': 0, 'TEXT_CLASS': 0}
+    metrics = {}
+
+    for content in contents:
+        contents_length[content['type']] += 1
+        metric = qmapi.metrics__get_content_metrics(ns, user_data['user_id'], content['id'])
+        if not metric.get('error', False) and metric['status'] == "CORRECT":
+            metrics_length[content['type']] += 1
+
     values = {
-        'mensagens': mensagens,
         'user_data': user_data,
-        'contents': contents
+        'metrics_length': metrics_length,
+        'contents': contents,
+        'contents_length': contents_length,
+        'school_classes': school_classes
     }
     response = render_to_response('core/index.html',
+                                  values,
+                                  context_instance=RequestContext(request))
+    return response
+
+
+def mensagens(request):
+    user_data = request.session.get('user_data')
+    mensagens = Mensagem.objects.filter(user_id=user_data['user_id'])
+
+    values = {'mensagens': mensagens,
+              'user_data': user_data}
+
+    response = render_to_response('core/messages.html',
                                   values,
                                   context_instance=RequestContext(request))
     return response
@@ -46,4 +74,4 @@ def nova_mensagem(request):
     msg.conteudo = request.POST['conteudo']
     msg.user_id = user_data['user_id']
     msg.save()
-    return redirect('/')
+    return redirect('/mensagens')

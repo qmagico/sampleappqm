@@ -1,5 +1,5 @@
 from django.test import TestCase
-from core.models import *
+from core.home.models import *
 
 __author__ = 'tony'
 
