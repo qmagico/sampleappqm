@@ -1,0 +1,56 @@
+{% extends "core/base.html" %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="row-fluid">
+                <div class="span1">
+                </div>
+                <div class="span10">
+                    <div class="page-header">
+                        <h1>
+                            {{ user_data.name }} <small>central do aluno</small>
+                        </h1>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <ul class="nav nav-pills">
+                                    <li>
+                                        <a href="/">Home</a>
+                                    </li>
+                                    <li class="active">
+                                        <a href="/mensagens">Mensagens</a>
+                                    </li>
+                                </ul>
+                                <div class="page-header">
+                                    <h1>
+                                        <small>Lista de tarefas</small>
+                                    </h1>
+                                </div>
+                                <div class="container-fluid">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <form action="/add" method="post">
+                                                <fieldset>
+                                                    <legend>Adicionar</legend>
+                                                    <input name="conteudo" type="text-area"/>
+                                                </fieldset>
+                                            </form>
+                                            {% for m in mensagens %}
+                                            <blockquote>
+                                                <p>{{ m.conteudo }}</p>
+                                            </blockquote>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -27,6 +27,14 @@ class QMApi():
         url = "%s/api/auth/%s/%s" % (self.host, token, ns)
         return self._do_get(url)
 
-    def content__get_by_type(self, ns, type):
-        url = "%s/api/content/get_by_type/%s/%s" % (self.host, ns, type)
+    def content__get_by_type(self, ns, type=''):
+        url = "%s/api/content/get_contents/%s/%s" % (self.host, ns, type)
+        return self._do_get(url)
+
+    def user__get_student_classes(self, ns, user_id):
+        url = "%s/api/user/get_student_classes/%s/%s" % (self.host, ns, user_id)
+        return self._do_get(url)
+
+    def metrics__get_content_metrics(self, ns, user_id, content_id):
+        url = "%s/api/metrics/get_content_metrics_from_user/%s/%s/%s" % (self.host, ns, user_id, content_id)
         return self._do_get(url)

@@ -1,0 +1,97 @@
+{% extends "core/base.html" %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="row-fluid">
+                    <div class="span1">
+                    </div>
+                    <div class="span10">
+                        <div class="page-header">
+                            <h1>
+                                {{ user_data.name }} <small>central do aluno</small>
+                            </h1>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <ul class="nav nav-pills">
+                                        <li class="active">
+                                            <a href="/">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="/mensagens">Mensagens</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <div class="span12">
+{#                                    <div class="btn-group">#}
+{#                                        <button class="btn">Selecionar curso</button> <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>#}
+{#                                            <ul class="dropdown-menu">#}
+{#                                                {% for s in school_classes %}#}
+{#                                                    <li>#}
+{#                                                        <a href="#{{ s.id }}">{{ s.name }}</a>#}
+{#                                                    </li>#}
+{#                                                {% endfor %}#}
+{#                                            </ul>#}
+{#                                    </div><br><br>#}
+                                    <div class="page-header">
+                                        <h1>
+                                            <small>Atividades feitas</small>
+                                        </h1>
+                                    </div>
+                                    <blockquote>
+                                        <p>
+                                            Vídeos: {{ metrics_length.VIDEO }} de {{ contents_length.VIDEO }}
+                                        </p>
+                                    </blockquote>
+                                    <blockquote>
+                                        <p>
+                                            Aulas-texto: {{ metrics_length.TEXT_CLASS }} de {{ contents_length.TEXT_CLASS    }}
+                                        </p>
+                                    </blockquote>
+                                    <blockquote>
+                                        <p>
+                                            Listas de exercícios: {{ metrics_length.EXERCISE_LIST }} de {{ contents_length.EXERCISE_LIST }}
+                                        </p>
+                                    </blockquote>
+                                    <div class="page-header">
+                                        <h1>
+                                            <small>Coisas para estudar</small>
+                                        </h1>
+                                    </div>
+                                    <div class="container-fluid">
+                                        <div class="row-fluid">
+                                            <div class="span12">
+                                                <ul class="thumbnails">
+                                                    {% for content in contents %}
+                                                    <li class="span3">
+                                                        <div class="thumbnail">
+                                                            <img alt="300x200" src="http://lorempixel.com/200/100/abstract" />
+                                                            <div class="caption">
+                                                                <h4>
+                                                                    {{ content.title }}
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
