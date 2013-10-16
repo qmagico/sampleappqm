@@ -9,7 +9,8 @@ def getQMApi():
     host = Config.get('qmagico_host', 'http://localhost:8080')
     api_key = Config.get('qmagico_api_key', 'abc123')
     app_id = Config.get('qmagico_api_id', 'sampleapp')
-    return qmagico_api.QMApi(host, app_id, api_key)
+    namespace = Config.get('namespace', 'www')
+    return qmagico_api.QMApi(host, app_id, api_key, namespace)
 
 
 def authenticate(request):
@@ -32,13 +33,15 @@ def home(request):
 
     contents = qmapi.content__get_by_type(ns)
 
-    contents_length = {'VIDEO': 0, 'EXERCISE_LIST': 0, 'TEXT_CLASS': 0}
-    metrics_length = {'VIDEO': 0, 'EXERCISE_LIST': 0, 'TEXT_CLASS': 0}
-    metrics = {}
+    contents_length = {'VIDEO': 0, 'VIMEO': 0, 'EXERCISE_LIST': 0, 'TEXT_CLASS': 0}
+    metrics_length = {'VIDEO': 0, 'VIMEO': 0, 'EXERCISE_LIST': 0, 'TEXT_CLASS': 0}
 
     for content in contents:
         contents_length[content['type']] += 1
         metric = qmapi.metrics__get_content_metrics(ns, user_data['user_id'], content['id'])
+        if not metric:
+            continue
+
         if not metric.get('error', False) and metric['status'] == "CORRECT":
             metrics_length[content['type']] += 1
 
